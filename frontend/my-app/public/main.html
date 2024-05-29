@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Module Management | All Posts</title>
+    <link rel="stylesheet" href="/main.css" />
+    <link rel="stylesheet" href="/Modal.css" />
+  </head>
+  <body>
+    <header>
+      <h1>All Posts</h1>
+      <button class="refresh-btn" onclick="refreshPage()">
+        <!-- Refresh Icon SVG -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 4a8 8 0 018 8h-2a6 6 0 00-6-6V4zm0 0V4m0 0h2m0 0M1 1h2m-2 0a8 8 0 000 16h2a6 6 0 006-6V4m-2 0v16m2 0h2m0 0M15 15a8 8 0 100-16h-2a6 6 0 000 12v2m2 0v2m-2 0h-2"
+          ></path>
+        </svg>
+        <!-- End of Refresh Icon SVG -->
+        Refresh
+      </button>
+    </header>
+    <div id="alert-container" class="alert-container"></div>
+    <nav>
+      <div class="dropdown">
+        <button class="dropbtn">Management of Posts</button>
+        <div class="dropdown-content">
+          <a href="/create">Create</a>
+        </div>
+      </div>
+    </nav>
+    <main>
+      <div>
+        <table id="postTable">
+          <thead>
+            <tr>
+              <th>PostID</th>
+              <th>UserID</th>
+              <th>Caption</th>
+              <th>ImageUrl</th>
+            </tr>
+          </thead>
+          <tbody id="postList"></tbody>
+        </table>
+      </div>
+    </main>
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeEditModal()">&times;</span>
+        <h2>Edit Post</h2>
+        <label for="editCaption">Caption:</label>
+        <input type="text" id="editCaption" name="editCaption" />
+        <label for="editImage">Image URL:</label>
+        <input type="text" id="editImage" name="editImage" />
+        <button onclick="saveEdit()">Save</button>
+        <button onclick="resetEdit()">Reset</button>
+      </div>
+    </div>
+    <script src="public/index.js" defer></script>
+
+    <script>
+      function refreshPage() {
+        location.reload(true); // Reloads the page
+      }
+    </script>
+  </body>
+</html>

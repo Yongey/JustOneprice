@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap");
+
+.button {
+  height: 35px;
+  width: 35px;
+  float: left;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-out;
+  position: relative;
+}
+
+.button .icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width: 60px;
+  border-radius: 50px;
+  box-sizing: border-box;
+  transition: all 0.25s ease-out;
+  font-size: 50px;
+}
+
+.button:hover {
+  width: 200px;
+}
+.button:nth-child(1):hover .icon {
+  left: 25%;
+  background: radial-gradient(
+    circle at 30% 107%,
+    #fdf497 0%,
+    #fdf497 5%,
+    #fd5949 45%,
+    #d6249f 60%,
+    #285aeb 90%
+  );
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
+}
+
+.button:hover .icon i {
+  color: #fff;
+}
+.button span {
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: 500;
+  opacity: 0; /* Hide initially */
+  transition: all 0.3s ease-out;
+}
+
+.button:hover span {
+  opacity: 1;
+}

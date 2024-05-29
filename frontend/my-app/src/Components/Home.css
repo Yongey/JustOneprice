@@ -1,0 +1,22 @@
+.product-card {
+  margin-top: 20%;
+  margin-left: 1%;
+  margin-bottom: 10%;
+}
+.homepage-message {
+  text-align: center; /* Center align the text */
+  margin-top: 10%; /* Add top margin for spacing */
+}
+.login-link {
+  color: blue;
+  text-decoration: underline;
+}
+
+.login-link:hover {
+  color: darkblue;
+}
+@media (max-width: 768px) {
+  .product-card {
+    margin-left: 0;
+  }
+}
