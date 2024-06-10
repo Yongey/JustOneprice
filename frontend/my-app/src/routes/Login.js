@@ -2,13 +2,20 @@ import React, { useState, useContext } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../login.css";
 import Navbar from "../Components/Navbar";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { AuthContext } from "../routes/AuthContext"; // Correct import path
 import { useNavigate } from "react-router-dom";
 const Login = () => {
-  const { setToken, setUsername, setEmail } = useContext(AuthContext); // Get setToken from AuthContext
+  const {
+    setToken,
+    setUsername,
+    setEmail,
+    setIsAdmin,
+    setAddress,
+    setPhoneNumber,
+  } = useContext(AuthContext); // Get setToken from AuthContext
   const [authMode, setAuthMode] = useState("signin");
   const [formData, setFormData] = useState({
     email: "",
@@ -32,16 +39,27 @@ const Login = () => {
           email: formData.email,
           password: formData.password,
         });
-        const { token, username, userEmail } = response.data;
+        const { token, username, userEmail, is_admin, userPN, userAddress } =
+          response.data;
         setToken(token); // Set the token
         setUsername(username); // Set the user's full name
         setEmail(userEmail);
+        setIsAdmin(is_admin);
+        setAddress(userAddress); // Corrected
+        setPhoneNumber(userPN); // Corrected
         localStorage.setItem("token", token);
         localStorage.setItem("username", username);
         localStorage.setItem("email", userEmail);
+        localStorage.setItem("isAdmin", is_admin);
+        localStorage.setItem("userPN", userPN); // Corrected
+        localStorage.setItem("address", userAddress); // Corrected
         toast.success("Logged in successfully!");
         setTimeout(() => {
-          navigate("/");
+          if (is_admin) {
+            navigate("/admin");
+          } else {
+            navigate("/");
+          }
         }, 1000);
       } else {
         response = await axios.post("http://localhost:3000/api/JO/register", {

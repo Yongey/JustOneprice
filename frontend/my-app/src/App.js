@@ -13,7 +13,9 @@ import Admin from "./routes/AdminPage";
 import OrderManage from "./Admin/OrderManagement";
 import UserManage from "./Admin/UserManagement";
 import ProductManage from "./Admin/ProductManagement";
-import { AuthProvider } from "./routes/AuthContext";
+import Profile from "./routes/Profile";
+import PrivateRoute from "./Components/PrivateRoute";
+
 import "react-toastify/dist/ReactToastify.css";
 import "./styles.css";
 import "./App.css";
@@ -28,6 +30,9 @@ const App = () => {
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="/Auth" element={<Login />} />
         <Route path="/DB" element={<DB />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/Profile" element={<Profile />} />
+        </Route>
         <Route path="/Admin" element={<Admin />} />
         <Route path="/Admin/OrderManage" element={<OrderManage />} />
         <Route path="/Admin/UserManage" element={<UserManage />} />

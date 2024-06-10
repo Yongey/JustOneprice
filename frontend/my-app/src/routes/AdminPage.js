@@ -1,14 +1,34 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom"; // Import Link
 import "../App.css";
+import { AuthContext } from "../routes/AuthContext";
 const AdminPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const { setIsAdmin, setToken, setUsername, setEmail } =
+    useContext(AuthContext);
+  const { isAdmin } = useContext(AuthContext);
+  useEffect(() => {
+    // Check if user is not an admin, redirect to another page
+    if (!isAdmin) {
+      // Redirect using JavaScript method
+      window.location.href = "/auth"; // Redirect to homepage or login page
+    }
+  }, [isAdmin]);
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
-
+  const handleLogout = () => {
+    // Clear the local storage and reset the context values
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("email");
+    localStorage.removeItem("isAdmin");
+    setToken(null);
+    setUsername(null);
+    setEmail(null);
+    setIsAdmin(false);
+  };
   const closeSidebar = () => {
     setSidebarOpen(false);
   };
@@ -122,7 +142,12 @@ const AdminPage = () => {
                     d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"
                   />
                 </svg>
-                <span className="flex-1 ms-4">Log Out</span>
+                <span className="flex-1 ms-4">
+                  {" "}
+                  <button onClick={handleLogout} className="logout-button">
+                    Logout
+                  </button>
+                </span>
               </a>
             </li>
           </ul>

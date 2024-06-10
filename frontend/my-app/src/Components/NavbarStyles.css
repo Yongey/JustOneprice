@@ -56,6 +56,38 @@
 
 .signup-container {
   margin-left: 25px; /* Adjust as needed */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nav-button {
+  font-size: 1.1rem; /* Adjust the text size here */
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  background-color: #8f51c8;
+  color: white;
+  border-radius: 8px;
+  white-space: nowrap; /* Prevents button text from wrapping */
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.profile-icon {
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem; /* Adjust the size as needed */
+  color: #000000;
+  text-decoration: none;
+  margin-right: 10px; /* Space between icon and logout button */
+}
+
+.profile-icon:hover {
+  color: #0056b3; /* Change color on hover */
+}
+.nav-button:hover {
+  background-color: #241ed5;
 }
 
 button {
@@ -107,6 +139,14 @@ button:hover {
     opacity: 1;
     z-index: -1;
     transition: 0.3s ease-in-out;
+  }
+  .signup-container {
+    flex-direction: column;
+    gap: 0; /* Adjust gap for vertical alignment */
+  }
+
+  .nav-button {
+    margin: 10px 0;
   }
   .nav-links {
     display: block;

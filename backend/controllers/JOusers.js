@@ -13,6 +13,48 @@ const getAllUsers = async (req, res) => {
     res.status(400).send(error.message);
   }
 };
+const deleteUserById = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    await JOuser.deleteUserById(userId);
+    res.status(200).send("User deleted successfully");
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+const updateUser = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const { username, email } = req.body;
+
+    // Check if username or email is provided
+    if (!username && !email) {
+      return res.status(400).json({ error: "Username or email is required" });
+    }
+
+    // Fetch the current user data
+    const currentUser = await JOuser.getUserById(userId);
+    if (!currentUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Update user with provided data or keep existing data
+    const newUsername = username || currentUser.username;
+    const newEmail = email || currentUser.email;
+
+    // Update the user
+    const updatedUser = await JOuser.updateUserById(
+      userId,
+      newUsername,
+      newEmail
+    );
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 const getUserByEmail = async (req, res) => {
   const { email } = req.params; // Assuming the email is passed as a route parameter
 
@@ -65,19 +107,41 @@ const loginUser = async (req, res) => {
   }
 
   try {
-    const { token } = await JOuser.loginUser(email, password);
+    const { token, is_admin } = await JOuser.loginUser(email, password);
     const userData = await JOuser.getUserByEmail(email);
-    const userEmail = userData.email;
-    const username = userData.username;
-    res.status(200).json({ token, userEmail, username });
+    const {
+      email: userEmail,
+      username,
+      phone_number: userPN,
+      address: userAddress,
+    } = userData;
+    const response = {
+      token,
+      userEmail,
+      username,
+      is_admin,
+      userPN,
+      userAddress,
+    };
+
+    if (is_admin) {
+      response.adminMessage = "Welcome Admin!";
+    } else {
+      response.userMessage = "Welcome User!";
+    }
+
+    res.status(200).json(response);
   } catch (error) {
     console.error("Error logging in user:", error);
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: "An unexpected error occurred" });
   }
 };
+
 module.exports = {
   getAllUsers,
   registerUser,
+  deleteUserById,
   loginUser,
+  updateUser,
   getUserByEmail,
 };

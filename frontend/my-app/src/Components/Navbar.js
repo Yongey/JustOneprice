@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../Components/NavbarStyles.css";
+import { FaIdCard } from "react-icons/fa6";
+
 import { AuthContext } from "../routes/AuthContext"; // Import AuthContext
 
 const Navbar = () => {
   const [clicked, setClicked] = useState(false);
-  const { token, setToken } = useContext(AuthContext); // Use AuthContext
+  const { token, setToken, isAdmin } = useContext(AuthContext); // Use AuthContext
   const isAuthenticated = !!token;
 
   const handleClick = () => {
@@ -16,6 +18,10 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setToken(null); // Clear the token
+    localStorage.removeItem("token"); // Clear the token in local storage
+    localStorage.removeItem("username");
+    localStorage.removeItem("email");
+    localStorage.removeItem("isAdmin");
     toast.success("Logged out successfully!");
   };
   const MenuItems = [
@@ -49,12 +55,34 @@ const Navbar = () => {
         ))}
         <div className="signup-container">
           {isAuthenticated ? (
-            <button className="login" onClick={handleLogout}>
-              Logout
-            </button>
+            <>
+              <Link to="/Profile" className="profile-icon">
+                <FaIdCard size={45} />
+                <span
+                  style={{
+                    fontWeight: "bold",
+                    marginRight: "1px",
+                    marginLeft: "12px",
+                  }}
+                >
+                  Profile
+                </span>
+              </Link>
+              {isAdmin && (
+                <Link to="/admin" className="nav-button admin-button">
+                  Admin
+                </Link>
+              )}
+              <button
+                className="nav-button logout-button"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </>
           ) : (
-            <Link to="/Auth">
-              <button className="login">Sign Up & Login</button>
+            <Link to="/Auth" className="nav-button login-button">
+              Sign Up & Login
             </Link>
           )}
         </div>
