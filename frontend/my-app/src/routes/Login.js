@@ -15,6 +15,7 @@ const Login = () => {
     setIsAdmin,
     setAddress,
     setPhoneNumber,
+    setUserId,
   } = useContext(AuthContext); // Get setToken from AuthContext
   const [authMode, setAuthMode] = useState("signin");
   const [formData, setFormData] = useState({
@@ -39,19 +40,28 @@ const Login = () => {
           email: formData.email,
           password: formData.password,
         });
-        const { token, username, userEmail, is_admin, userPN, userAddress } =
-          response.data;
+        const {
+          token,
+          username,
+          userEmail,
+          is_admin,
+          userPN,
+          userAddress,
+          userId,
+        } = response.data;
         setToken(token); // Set the token
         setUsername(username); // Set the user's full name
         setEmail(userEmail);
         setIsAdmin(is_admin);
         setAddress(userAddress); // Corrected
         setPhoneNumber(userPN); // Corrected
+        setUserId(userId); // Set the user_id
         localStorage.setItem("token", token);
         localStorage.setItem("username", username);
         localStorage.setItem("email", userEmail);
         localStorage.setItem("isAdmin", is_admin);
         localStorage.setItem("userPN", userPN); // Corrected
+        localStorage.setItem("user_id", userId);
         localStorage.setItem("address", userAddress); // Corrected
         toast.success("Logged in successfully!");
         setTimeout(() => {

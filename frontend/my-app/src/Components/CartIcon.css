@@ -1,0 +1,40 @@
+.cart-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  position: relative;
+  color: #333; /* Adjust color to match your design */
+  transition: color 0.3s ease;
+}
+
+.cart-icon:hover {
+  color: #279bda; /* Adjust hover color to match Apple's style */
+}
+
+.cart-icon-logo {
+  margin-top: 8px; /* Adjust spacing between icon and label */
+}
+
+.cart-count {
+  background-color: #007aff; /* Background color for count */
+  color: white; /* Text color for count */
+  font-size: 13px; /* Adjust font size */
+  padding: 4px 8px; /* Adjust padding */
+  border-radius: 50%; /* Make it round */
+  position: absolute;
+  top: -8px; /* Adjust vertical position */
+  right: 30px; /* Adjust horizontal position */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px; /* Ensure minimum width for single-digit count */
+  height: 21px; /* Adjust height */
+  font-weight: bold; /* Bold text for count */
+}
+
+.cart-label {
+  font-size: 12px; /* Adjust font size for label */
+  margin-top: 4px; /* Adjust spacing between count and label */
+}

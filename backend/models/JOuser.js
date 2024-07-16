@@ -33,11 +33,17 @@ const deleteUserById = async (userId) => {
     throw error;
   }
 };
-const updateUserById = async (userId, username, email) => {
+const updateUserById = async (
+  userId,
+  username,
+  email,
+  phone_number,
+  address
+) => {
   try {
     const result = await pool.query(
-      "UPDATE jousers SET username = $1, email = $2 WHERE user_id = $3 RETURNING *",
-      [username, email, userId]
+      "UPDATE jousers SET username = $1, email = $2, phone_number = $3, address = $4 WHERE user_id = $5 RETURNING *",
+      [username, email, phone_number, address, userId]
     );
     if (result.rowCount === 0) {
       throw new Error(`User with ID ${userId} not found`);

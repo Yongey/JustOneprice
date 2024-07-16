@@ -3,6 +3,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom"; // Import Link
 import "../App.css";
 import { AuthContext } from "../routes/AuthContext";
+import { toast } from "react-toastify"; // Import toast from react-toastify
+import "react-toastify/dist/ReactToastify.css";
 const AdminPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { setIsAdmin, setToken, setUsername, setEmail } =
@@ -28,6 +30,8 @@ const AdminPage = () => {
     setUsername(null);
     setEmail(null);
     setIsAdmin(false);
+    toast.success("Logged out successfully!");
+    window.location.href = "/auth";
   };
   const closeSidebar = () => {
     setSidebarOpen(false);
@@ -105,6 +109,7 @@ const AdminPage = () => {
                 <span className="flex-1 ms-4">Products</span>
               </Link>
             </li>
+
             <li>
               <Link
                 to="/Admin/OrderManage"
@@ -120,6 +125,24 @@ const AdminPage = () => {
                   <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
                 </svg>
                 <span className="flex-1 ms-4">Orders</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/"
+                className="flex items-center p-3 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <svg
+                  className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M10 2.8L2 9.2V18h6v-4h4v4h6V9.2l-8-6.4zM10 0l10 8v12a2 2 0 0 1-2 2h-6v-6H8v6H2a2 2 0 0 1-2-2V8l10-8z" />
+                </svg>
+
+                <span className="flex-1 ms-4">Home Page</span>
               </Link>
             </li>
             <li>

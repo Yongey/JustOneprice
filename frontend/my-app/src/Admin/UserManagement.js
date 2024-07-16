@@ -6,8 +6,11 @@ import "./UM.css";
 import { FaUserClock } from "react-icons/fa";
 import UserPhoneNumberCell from "../Components/UserPhoneNumberCell";
 import UserAddressCell from "../Components/UserAddressCell";
+import EditUserModal from "../Components/EditUserModal";
 const UserManagement = () => {
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [userToEdit, setUserToEdit] = useState(null);
   const [showToast, setShowToast] = useState(false);
   const [users, setUsers] = useState([]); // State to store user data
   const [userToDelete, setUserToDelete] = useState(null);
@@ -52,6 +55,32 @@ const UserManagement = () => {
       }
     }
   };
+  const handleEditButtonClick = (userId) => {
+    const user = users.find((user) => user.user_id === userId);
+    setUserToEdit(user);
+    setIsEditing(true);
+  };
+
+  const handleEditUser = async (updatedUserData) => {
+    try {
+      console.log("Updating user with data:", updatedUserData);
+      const response = await axios.put(
+        `http://localhost:3000/api/JO/users/${updatedUserData.user_id}`,
+        updatedUserData
+      );
+      const updatedUser = response.data;
+      setUsers(
+        users.map((user) =>
+          user.user_id === updatedUser.user_id ? updatedUser : user
+        )
+      );
+      setIsEditing(false);
+      setUserToEdit(null);
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
+  };
+
   return (
     <div>
       {/* Render users */}
@@ -193,6 +222,7 @@ const UserManagement = () => {
                           <button
                             type="button"
                             className="flex items-center justify-center text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-2.5 me-2 mb-2 h-11 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                            onClick={() => handleEditButtonClick(user.user_id)}
                           >
                             <FaUserClock className="text-xl mr-2" />
                             <span>Edit User</span>
@@ -251,6 +281,13 @@ const UserManagement = () => {
             </svg>
           </button>
         </div>
+      )}{" "}
+      {isEditing && (
+        <EditUserModal
+          user={userToEdit}
+          handleClose={() => setIsEditing(false)}
+          handleEditUser={handleEditUser}
+        />
       )}
     </div>
   );

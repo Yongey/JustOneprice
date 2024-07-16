@@ -3,13 +3,15 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../Components/NavbarStyles.css";
-import { FaIdCard } from "react-icons/fa6";
-
-import { AuthContext } from "../routes/AuthContext"; // Import AuthContext
-
+import { FaIdCard, FaShoppingCart } from "react-icons/fa";
+import { GiLion } from "react-icons/gi";
+import { AuthContext } from "../routes/AuthContext";
+import { useCart } from "../Components/CartContext";
+import "./CartIcon.css";
 const Navbar = () => {
   const [clicked, setClicked] = useState(false);
-  const { token, setToken, isAdmin } = useContext(AuthContext); // Use AuthContext
+  const { token, setToken, isAdmin } = useContext(AuthContext);
+  const { cartItems } = useCart();
   const isAuthenticated = !!token;
 
   const handleClick = () => {
@@ -17,13 +19,14 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    setToken(null); // Clear the token
-    localStorage.removeItem("token"); // Clear the token in local storage
+    setToken(null);
+    localStorage.removeItem("token");
     localStorage.removeItem("username");
     localStorage.removeItem("email");
     localStorage.removeItem("isAdmin");
     toast.success("Logged out successfully!");
   };
+
   const MenuItems = [
     {
       title: "Home",
@@ -38,9 +41,14 @@ const Navbar = () => {
       icon: "fa-solid fa-shop",
     },
   ];
+
   return (
     <nav className="NavbarItems">
       <h1 className="navbar-logo">JustOnePrice</h1>
+      <GiLion
+        style={{ fontSize: "2rem", marginLeft: "0.5rem", marginBottom: "2rem" }}
+      />
+
       <div className="menu-icons" onClick={handleClick}>
         <i className={clicked ? "fas fa-times" : "fas fa-bars"}></i>
       </div>
@@ -85,6 +93,13 @@ const Navbar = () => {
               Sign Up & Login
             </Link>
           )}
+          <Link to="/cart" className="cart-icon">
+            <FaShoppingCart size={25} className="cart-icon-logo" />
+            <span className="cart-count">
+              {cartItems ? cartItems.length : 0}
+            </span>
+            <span className="cart-text">Shopping Cart</span>
+          </Link>
         </div>
       </ul>
       <ToastContainer autoClose={5500} />

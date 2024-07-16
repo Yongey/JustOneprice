@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 import "../Components/Home.css";
+
 import "../Components/FooterStyles.css";
 import { AuthContext } from "../routes/AuthContext"; // Import AuthContext
 
@@ -33,32 +34,123 @@ const Home = () => {
           )}
         </div>
       </div>
-      <div className="p-5 grid grid-cols-4 gap-5">
-        <div className="container product-card">
-          <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <a href="#">
-              <img
-                class="p-8 rounded-t-lg"
-                src="https://m.media-amazon.com/images/I/611uU63JESL._AC_SX679_.jpg"
-              />
-            </a>
-            <div class="px-5 pb-5">
-              <a href="#">
-                <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                  Apple Watch Series 7 GPS, Aluminum Case, Starlight Sport
-                </h5>
-              </a>
 
-              <div class="flex items-center justify-between mt-6">
-                <span class="text-3xl font-bold text-gray-900 dark:text-white">
-                  $599
-                </span>
-                <a class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                  Browse
-                </a>
-              </div>
-            </div>
-          </div>
+      <div class="flex items-center justify-center py-4 md:py-8 flex-wrap">
+        <button
+          type="button"
+          class="text-gray-700 border border-black hover:text-white border border-blue-600  hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800"
+        >
+          All categories
+        </button>
+        <button
+          type="button"
+          class="text-gray-900 border border-black hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700  focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800"
+        >
+          Shoes
+        </button>
+        <button
+          type="button"
+          class="text-gray-900 border border-black hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700  focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800"
+        >
+          Bags
+        </button>
+        <button
+          type="button"
+          class="text-gray-900 border border-black hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700  focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800"
+        >
+          Electronics
+        </button>
+        <button
+          type="button"
+          class="text-gray-900 border border-black hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700  focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800"
+        >
+          Gaming
+        </button>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div>
+          <img
+            class="h-auto max-w-full rounded-lg"
+            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg"
+            alt=""
+          ></img>
+        </div>
+        <div>
+          <img
+            class="h-auto max-w-full rounded-lg"
+            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg"
+            alt=""
+          ></img>
+        </div>
+        <div>
+          <img
+            class="h-auto max-w-full rounded-lg"
+            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg"
+            alt=""
+          ></img>
+        </div>
+        <div>
+          <img
+            class="h-auto max-w-full rounded-lg"
+            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg"
+            alt=""
+          ></img>
+        </div>
+        <div>
+          <img
+            class="h-auto max-w-full rounded-lg"
+            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg"
+            alt=""
+          ></img>
+        </div>
+        <div>
+          <img
+            class="h-auto max-w-full rounded-lg"
+            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg"
+            alt=""
+          ></img>
+        </div>
+        <div>
+          <img
+            class="h-auto max-w-full rounded-lg"
+            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-6.jpg"
+            alt=""
+          ></img>
+        </div>
+        <div>
+          <img
+            class="h-auto max-w-full rounded-lg"
+            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-7.jpg"
+            alt=""
+          ></img>
+        </div>
+        <div>
+          <img
+            class="h-auto max-w-full rounded-lg"
+            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-8.jpg"
+            alt=""
+          ></img>
+        </div>
+        <div>
+          <img
+            class="h-auto max-w-full rounded-lg"
+            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-9.jpg"
+            alt=""
+          ></img>
+        </div>
+        <div>
+          <img
+            class="h-auto max-w-full rounded-lg"
+            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-10.jpg"
+            alt=""
+          ></img>
+        </div>
+        <div>
+          <img
+            class="h-auto max-w-full rounded-lg"
+            src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg"
+            alt=""
+          ></img>
         </div>
       </div>
 

@@ -25,11 +25,11 @@ const deleteUserById = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const { username, email } = req.body;
+    const { username, email, phone_number, address } = req.body;
 
-    // Check if username or email is provided
-    if (!username && !email) {
-      return res.status(400).json({ error: "Username or email is required" });
+    // Check if any data is provided
+    if (!username && !email && !address && !phone_number) {
+      return res.status(400).json({ error: "At least one field is required" });
     }
 
     // Fetch the current user data
@@ -41,12 +41,16 @@ const updateUser = async (req, res) => {
     // Update user with provided data or keep existing data
     const newUsername = username || currentUser.username;
     const newEmail = email || currentUser.email;
+    const newAddress = address || currentUser.address;
+    const newPhoneNumber = phone_number || currentUser.phone_number;
 
     // Update the user
     const updatedUser = await JOuser.updateUserById(
       userId,
       newUsername,
-      newEmail
+      newEmail,
+      newPhoneNumber,
+      newAddress
     );
     res.status(200).json(updatedUser);
   } catch (error) {
@@ -110,12 +114,14 @@ const loginUser = async (req, res) => {
     const { token, is_admin } = await JOuser.loginUser(email, password);
     const userData = await JOuser.getUserByEmail(email);
     const {
+      user_id: userId,
       email: userEmail,
       username,
       phone_number: userPN,
       address: userAddress,
     } = userData;
     const response = {
+      userId,
       token,
       userEmail,
       username,

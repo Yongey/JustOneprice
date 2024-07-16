@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const UserAddressCell = ({ address }) => {
-  const maxLength = 10; // Define the maximum length of the address before truncating
+  const maxLength = 0; // Define the maximum length of the address before truncating
   const [showMore, setShowMore] = useState(false); // State to track whether to show more or not
 
   const toggleShowMore = () => {

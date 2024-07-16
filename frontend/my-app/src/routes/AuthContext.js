@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [address, setAddress] = useState(
     localStorage.getItem("address") || null // Corrected key
   );
-
+  const [userId, setUserId] = useState(localStorage.getItem("user_id") || null); // New state for user_id
   useEffect(() => {
     setToken(localStorage.getItem("token"));
     setUsername(localStorage.getItem("username"));
@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
     setIsAdmin(JSON.parse(localStorage.getItem("isAdmin")));
     setPhoneNumber(localStorage.getItem("userPN")); // Corrected key
     setAddress(localStorage.getItem("address")); // Corrected key
+    setUserId(localStorage.getItem("user_id"));
   }, []);
 
   const isAdminUser = () => {
@@ -46,6 +47,8 @@ export const AuthProvider = ({ children }) => {
         setPhoneNumber,
         address,
         setAddress,
+        userId, // Provide user_id in the context
+        setUserId, // Provide setUserId function in the context
         isAdminUser,
       }}
     >

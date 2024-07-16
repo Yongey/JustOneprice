@@ -1,0 +1,10 @@
+.fixed-size-container {
+  width: 500px;
+  height: 500px;
+  position: relative;
+}
+
+.fixed-size-image {
+  width: 100%;
+  height: 100%;
+}

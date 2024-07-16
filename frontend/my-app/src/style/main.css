@@ -148,3 +148,8 @@ main {
   background-color: var(--main-color);
   color: #fff;
 }
+.product-image {
+  width: 100%; /* Ensure the image takes full width of its container */
+  height: 150%; /* Automatically adjust height to maintain aspect ratio */
+  max-height: 300px; /* Set a maximum height to control how tall the image can be */
+}
