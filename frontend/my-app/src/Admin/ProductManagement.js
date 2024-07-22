@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import {
@@ -5,7 +6,9 @@ import {
   IoMdTrash,
   IoMdCreate,
   IoIosAdd,
+  IoIosImage,
 } from "react-icons/io";
+import { RiImageAddLine } from "react-icons/ri";
 import Modal from "../Components/Modal";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -17,7 +20,11 @@ const ProductManagement = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showUrlInput, setShowUrlInput] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
-
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [productImages, setProductImages] = useState({});
+  const [currentProductId, setCurrentProductId] = useState(null);
+  const [selectedImages, setSelectedImages] = useState([]);
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -33,12 +40,12 @@ const ProductManagement = () => {
     }
   };
 
-  const handleShowUrlInput = () => {
-    setShowUrlInput(true);
-  };
+  const handleAddImageUrl = async () => {
+    if (!selectedProductId) {
+      toast.error("No product selected.");
+      return;
+    }
 
-  const handleAddImageUrl = async (productId) => {
-    // Trim whitespace from imageUrl and check if it's empty
     const trimmedUrl = imageUrl.trim();
     if (!trimmedUrl) {
       toast.error("Please enter a valid Image URL.");
@@ -47,19 +54,17 @@ const ProductManagement = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/JOproduct/products/${productId}/addimageUrl`,
+        `http://localhost:3000/api/JOproduct/products/${selectedProductId}/addimageUrl`,
         { imageUrl: trimmedUrl }
       );
       console.log("Image URL added:", response.data);
       toast.success("Image URL added successfully.");
       setImageUrl("");
-      fetchProducts();
+      fetchProducts(); // Refresh the product list
       setShowUrlInput(false); // Close the URL input form
-      window.location.reload(); // Refresh the page
     } catch (error) {
       console.error("Error adding image URL:", error);
       toast.error("Failed to add image URL.");
-      window.location.reload(); // Refresh the page
     }
   };
 
@@ -142,6 +147,98 @@ const ProductManagement = () => {
       console.error("Error updating product:", error);
     }
   };
+  const handleViewImages = async (productId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/JOproduct/product/${productId}/images`
+      );
+      setProductImages((prevImages) => ({
+        ...prevImages,
+        [productId]: response.data, // Set the images directly
+      }));
+      setCurrentProductId(productId);
+      setShowImageModal(true); // Show the modal
+    } catch (error) {
+      console.error("Error fetching product images:", error);
+      toast.error("Failed to fetch product images.");
+    }
+  };
+  const handleSelectImage = (image) => {
+    setSelectedImages((prevSelected) =>
+      prevSelected.includes(image.image_id)
+        ? prevSelected.filter((id) => id !== image.image_id)
+        : [...prevSelected, image.image_id]
+    );
+  };
+
+  const handleDeleteImages = async () => {
+    if (selectedImages.length === 0) {
+      toast.error("No images selected for deletion.");
+      return;
+    }
+
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/JOproduct/products/${currentProductId}/deleteImages`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: { imageIds: selectedImages },
+        }
+      );
+      toast.success("Selected images deleted successfully.");
+      setSelectedImages([]);
+      fetchProducts();
+      closeImageModal();
+    } catch (error) {
+      console.error("Error deleting images:", error);
+      toast.error("Failed to delete selected images.");
+    }
+  };
+  const handleShowUrlInput = (productId) => {
+    setSelectedProductId(productId);
+    setShowUrlInput(true);
+  };
+  const closeImageModal = () => {
+    setShowImageModal(false);
+    setCurrentProductId(null);
+    setSelectedImages([]);
+  };
+  const handleUploadImage = (productId) => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.multiple = true; // Allow multiple file selection
+    input.onchange = async (e) => {
+      const files = e.target.files; // Get all selected files
+      if (files.length > 0) {
+        try {
+          const formData = new FormData();
+
+          // Append all selected files to FormData
+          Array.from(files).forEach((file) => formData.append("images", file));
+
+          const url = `http://localhost:3000/api/JOproduct/products/${productId}/images`;
+          console.log("Upload URL:", url);
+
+          const response = await axios.post(url, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+
+          console.log("Upload Response:", response.data);
+          toast.success("Images uploaded successfully.");
+          fetchProducts(); // Refresh the product list or perform any other necessary action
+        } catch (error) {
+          console.error("Error uploading images:", error);
+          toast.error("Failed to upload images.");
+        }
+      }
+    };
+    input.click();
+  };
 
   return (
     <div className="container mx-auto px-4">
@@ -190,36 +287,31 @@ const ProductManagement = () => {
                 Category:{" "}
                 <span className="font-medium">{product.category}</span>
               </p>
-              <div className="flex justify-end space-x-2">
+              <div className="flex justify-end space-x-3">
                 <button
                   type="button"
-                  className="text-blue-500 hover:text-blue-700"
+                  className="text-blue-500 hover:text-white-700 hover:bg-blue-700 "
                   onClick={() => handleEditProduct(product)}
                 >
                   <IoMdCreate style={{ fontSize: "24px" }} />
                 </button>
                 <button
                   type="button"
-                  className="text-red-500 hover:text-red-700"
+                  className="text-red-500 hover:bg-red-700 hover:text-white-700"
                   onClick={() =>
                     handleDeleteProduct(product.product_id, product.name)
                   }
                 >
                   <IoMdTrash style={{ fontSize: "24px" }} />
                 </button>
-              </div>{" "}
-              <div className="flex justify-end space-x-2">
-                {/* Icon to add image URL */}
                 <button
                   type="button"
-                  className="text-blue-500 hover:text-blue-700"
+                  className="text-violet-700 hover:bg-violet-700"
                   onClick={() => handleShowUrlInput(product.product_id)}
                 >
                   <IoIosAdd style={{ fontSize: "24px" }} />
                 </button>
-
-                {/* Modal for URL Input */}
-                {showUrlInput && (
+                {showUrlInput && selectedProductId === product.product_id && (
                   <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
                     <div className="bg-white p-8 rounded-lg shadow-lg max-w-md mx-auto">
                       <h2 className="text-lg font-semibold text-gray-800 mb-4">
@@ -238,13 +330,13 @@ const ProductManagement = () => {
                         <button
                           type="button"
                           className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mr-2 transition-colors duration-300"
-                          onClick={() => handleAddImageUrl(product.product_id)}
+                          onClick={handleAddImageUrl}
                         >
                           Add URL
                         </button>
                         <button
                           type="button"
-                          className="text-gray-600 hover:text-gray-800 px-4 py-2 rounded transition-colors duration-300"
+                          className="text-red px-4 py-2 rounded transition-colors duration-300 hover:bg-red-700"
                           onClick={() => {
                             setShowUrlInput(false);
                             setImageUrl(""); // Clear input field
@@ -256,12 +348,83 @@ const ProductManagement = () => {
                     </div>
                   </div>
                 )}
-
-                {/* ... */}
+                <button
+                  type="button"
+                  className="text-green-700 hover:bg-green-700"
+                  onClick={() => handleViewImages(product.product_id)}
+                >
+                  <IoIosImage style={{ fontSize: "24px" }} />
+                </button>
+                <button
+                  type="button"
+                  className="text-yellow-700 hover:bg-yellow-700"
+                  onClick={() => handleUploadImage(product.product_id)}
+                >
+                  <RiImageAddLine style={{ fontSize: "24px" }} />
+                </button>
+              </div>{" "}
+              {/* ... */}
+            </div>
+          </div>
+        ))}{" "}
+        {showImageModal && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50"
+            onClick={closeImageModal}
+          >
+            <div
+              className="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto max-h-[80vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()} // Prevent closing the modal when clicking inside
+            >
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                Product Images
+              </h2>
+              {productImages[currentProductId] &&
+                productImages[currentProductId].length > 0 && (
+                  <div className="grid grid-cols-3 gap-2">
+                    {productImages[currentProductId].map((image, index) => (
+                      <div key={index} className="relative text-center">
+                        <input
+                          type="checkbox"
+                          className="absolute top-0 right-0 m-2 z-10"
+                          checked={selectedImages.includes(image.image_id)}
+                          onChange={() => handleSelectImage(image)}
+                        />
+                        <img
+                          className="w-24 h-24 object-cover rounded-md mb-2"
+                          src={
+                            image?.image_url?.startsWith("http")
+                              ? image.image_url
+                              : `http://localhost:3000${image.image_url}`
+                          }
+                          alt={`Product ${currentProductId}`}
+                        />
+                        <div className="text-gray-600 text-xs">
+                          {image.image_id}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              <div className="flex justify-end space-x-4 mt-4">
+                <button
+                  type="button"
+                  className="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                  onClick={handleDeleteImages}
+                >
+                  Delete Selected
+                </button>
+                <button
+                  type="button"
+                  className="mt-4 bg-red-300 hover:bg-red-600 text-white px-4 py-2 rounded"
+                  onClick={closeImageModal}
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>
-        ))}
+        )}
       </div>
 
       <Modal

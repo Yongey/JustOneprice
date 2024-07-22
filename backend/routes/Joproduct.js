@@ -23,9 +23,17 @@ router.post(
   "/products/:productId/addImageUrl",
   productController.addImageUrlByProductId
 );
-
+router.put("/products/:productId", productController.updateProduct);
 // Route to get details of a specific product
 router.get("/products/:productId", productController.getProductDetails);
 router.get("/products", productController.getAllProducts);
-
+router.put("/products/:productId", productController.updateProduct);
+router.get(
+  "/product/:productId/images",
+  productController.getProductImagesByProductId
+);
+router.delete(
+  "/products/:productId/deleteImages",
+  productController.deleteImagesByProductId
+);
 module.exports = router;

@@ -1,0 +1,164 @@
+.form-container {
+  max-width: 600px;
+  margin: auto;
+  margin-top: 25%;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border: 1px solid #e0e0e0; /* Light gray border for a clean look */
+}
+.form-container h3.checkout-header {
+  color: #333; /* Darker text color for better readability */
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.back-to-home-button {
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  background-color: rgb(43, 86, 214);
+}
+.back-to-cart-button {
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  background-color: rgb(43, 214, 106);
+}
+.checkout-header {
+  font-size: 0.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.5rem;
+
+  color: #333;
+}
+.custom-form {
+  padding: 20px;
+}
+
+.custom-input {
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.custom-submit-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.custom-submit-button:hover {
+  background-color: #0056b3;
+}
+.terms-box {
+  border: 1px solid #e0e0e0; /* Light gray border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Padding inside the box */
+  background-color: #f9f9f9; /* Light background color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
+}
+
+.terms-content {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between the checkbox and the label */
+}
+
+.terms-content .form-check-label {
+  font-size: 16px; /* Larger font size for the label */
+  color: #333; /* Darker text color */
+}
+
+.terms-content .form-check-input:checked {
+  background-color: #007bff; /* Bootstrap primary color */
+  border-color: #007bff; /* Border color when checked */
+}
+
+.terms-content .form-check-input {
+  margin-right: 10px; /* Space between checkbox and label */
+}
+
+/* Custom styles for delivery options */
+.delivery-options {
+  border: 1px solid #e0e0e0; /* Light gray border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Padding inside the box */
+  background-color: #f9f9f9; /* Light background color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
+}
+
+.delivery-options-container {
+  display: flex;
+  flex-direction: column; /* Stack radio buttons vertically */
+  gap: 10px; /* Space between radio buttons */
+}
+
+.form-check-label {
+  font-size: 16px; /* Larger font size for the label */
+  color: #333; /* Darker text color */
+}
+
+.form-check-input:checked {
+  background-color: #007bff; /* Bootstrap primary color */
+  border-color: #007bff; /* Border color when checked */
+}
+.payment-label {
+  display: flex;
+  align-items: center;
+}
+
+.payment-label svg {
+  margin-right: 8px; /* Adjust spacing between icon and text */
+}
+.payment-buttons-container {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+  justify-content: space-around; /* Distribute buttons evenly */
+}
+
+.payment-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.payment-button:hover {
+  opacity: 0.9;
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.grabpay-button {
+  background-color: #00bf2d; /* GrabPay green */
+}
+.grabpay-button:hover {
+  background-color: #009e8e; /* Darker green for hover effect */
+}
+.paynow-button {
+  background-color: #f34a12; /* PayNow yellow */
+}
+
+.shopee-button {
+  background-color: #ef7d25; /* ShopeePay red */
+}
+.shopee-button:hover {
+  background-color: #e45323; /* Darker red for hover effect */
+}

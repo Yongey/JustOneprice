@@ -101,6 +101,7 @@ const productModel = {
       throw error;
     }
   },
+
   addImageUrl: async (productId, imageUrl) => {
     try {
       await pool.query(
@@ -109,6 +110,68 @@ const productModel = {
       );
     } catch (error) {
       console.error("Error inserting image URL:", error);
+      throw error;
+    }
+  },
+  updateProduct: async (productId, updatedData) => {
+    try {
+      const fields = Object.keys(updatedData);
+      const values = Object.values(updatedData);
+
+      const setClause = fields
+        .map((field, index) => `${field} = $${index + 1}`)
+        .join(", ");
+      values.push(productId);
+
+      const query = `UPDATE joproducts SET ${setClause}, updated_at = CURRENT_TIMESTAMP WHERE product_id = $${values.length} RETURNING *`;
+
+      const result = await pool.query(query, values);
+
+      if (result.rows.length === 0) {
+        throw new Error(`Product with ID ${productId} not found`);
+      }
+
+      return result.rows[0];
+    } catch (error) {
+      console.error("Error updating product:", error);
+      throw error;
+    }
+  },
+
+  getProductImagesByProductId: async (productId) => {
+    try {
+      const query = `
+        SELECT *
+        FROM joimage
+        WHERE product_id = $1
+      `;
+      const result = await pool.query(query, [productId]);
+      return result.rows;
+    } catch (error) {
+      console.error("Error getting product images:", error);
+      throw error;
+    }
+  },
+  deleteImagesByProductId: async (productId, imageIds) => {
+    try {
+      // Ensure imageIds is an array of integers or strings representing image IDs
+      if (!Array.isArray(imageIds) || imageIds.length === 0) {
+        throw new Error("No image IDs provided");
+      }
+
+      // Create placeholders for SQL query
+      const imagePlaceholders = imageIds
+        .map((_, index) => `$${index + 2}`)
+        .join(", ");
+      const query = `
+        DELETE FROM joimage 
+        WHERE product_id = $1 
+          AND image_id IN (${imagePlaceholders})
+      `;
+
+      await pool.query(query, [productId, ...imageIds]);
+    } catch (error) {
+      console.error("Error deleting images:", error);
       throw error;
     }
   },

@@ -128,6 +128,59 @@ const productController = {
       res.status(500).json({ error: "Error deleting product" });
     }
   },
+  updateProduct: async (req, res) => {
+    try {
+      const { productId } = req.params;
+      const updatedData = req.body;
+
+      const updatedProduct = await productModel.updateProduct(
+        productId,
+        updatedData
+      );
+
+      res.status(200).json({ product: updatedProduct });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+  getProductImagesByProductId: async (req, res) => {
+    const { productId } = req.params;
+
+    try {
+      const images = await productModel.getProductImagesByProductId(productId);
+
+      if (images.length === 0) {
+        return res
+          .status(404)
+          .json({ error: "No images found for this product" });
+      }
+
+      res.status(200).json(images);
+    } catch (error) {
+      console.error("Error retrieving product images:", error);
+      res.status(500).json({ error: "Error retrieving product images" });
+    }
+  },
+  deleteImagesByProductId: async (req, res) => {
+    const { productId } = req.params;
+    const { imageIds } = req.body; // Array of image IDs to be deleted
+
+    if (!imageIds || !Array.isArray(imageIds) || imageIds.length === 0) {
+      return res
+        .status(400)
+        .json({ error: "No image IDs provided for deletion" });
+    }
+
+    try {
+      // Delete specified images associated with the product
+      await productModel.deleteImagesByProductId(productId, imageIds);
+
+      res.status(200).json({ message: "Images deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting images:", error);
+      res.status(500).json({ error: "Error deleting images" });
+    }
+  },
 };
 
 module.exports = productController;

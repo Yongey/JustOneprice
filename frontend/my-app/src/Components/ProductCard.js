@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../routes/AuthContext"; // Import AuthContext
 
 const ProductCard = ({ product }) => {
-  const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
-  const [isExpanded, setIsExpanded] = React.useState(false);
-
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const { token } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const nextImage = () => {
@@ -27,7 +28,9 @@ const ProductCard = ({ product }) => {
   const truncatedDescription = `${description.slice(0, 100)}`;
 
   const handleViewDetails = () => {
-    navigate(`/product/${product.product_id}`);
+    if (token) {
+      navigate(`/product/${product.product_id}`);
+    }
   };
 
   return (
@@ -53,16 +56,42 @@ const ProductCard = ({ product }) => {
               {product.images.length > 1 && (
                 <>
                   <button
-                    className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2 shadow-md hover:bg-opacity-75 dark:bg-gray-800 dark:hover:bg-opacity-75 dark:text-white"
+                    className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gradient-to-r from-gray-200 to-gray-300 border border-gray-300 rounded-full p-2 shadow-md hover:bg-gradient-to-r hover:from-gray-300 hover:to-gray-400 hover:shadow-lg transition-all duration-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:bg-gray-600"
                     onClick={prevImage}
                   >
-                    {"<"}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
                   </button>
                   <button
-                    className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2 shadow-md hover:bg-opacity-75 dark:bg-gray-800 dark:hover:bg-opacity-75 dark:text-white"
+                    className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gradient-to-r from-gray-200 to-gray-300 border border-gray-300 rounded-full p-2 shadow-md hover:bg-gradient-to-r hover:from-gray-300 hover:to-gray-400 hover:shadow-lg transition-all duration-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:bg-gray-600"
                     onClick={nextImage}
                   >
-                    {">"}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
                   </button>
                 </>
               )}
@@ -88,14 +117,23 @@ const ProductCard = ({ product }) => {
               </button>
             )}
           </p>
-          <div className="flex flex-col items-center mt-4">
-            <span className="text-3xl font-bold text-gray-900 dark:text-white">
-              ${product.price}
-            </span>
-          </div>
+          {token ? (
+            <div className="flex flex-col items-center mt-4">
+              <span className="text-3xl font-bold text-gray-900 dark:text-white">
+                ${product.price}
+              </span>
+            </div>
+          ) : (
+            <p className="text-gray-500 mt-4">Login to see the price</p>
+          )}
           <button
             onClick={handleViewDetails}
-            className="text-center text-white mt-4 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-800 ml-4"
+            disabled={!token}
+            className={`text-center text-white mt-4 font-medium rounded-lg text-sm px-5 py-2.5 ml-4 ${
+              token
+                ? "bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-800"
+                : "bg-gray-300 cursor-not-allowed"
+            }`}
           >
             View Details
           </button>

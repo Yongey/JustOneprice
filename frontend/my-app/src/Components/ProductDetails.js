@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import "../Components/productDetail.css";
 import { useCart } from "../Components/CartContext";
+import { AuthContext } from "../routes/AuthContext"; // Import AuthContext
 
 const ProductDetails = () => {
   const { productId } = useParams(); // Get the productId from the URL
   const { addToCart } = useCart();
+  const { token } = useContext(AuthContext); // Get token from AuthContext
   const [product, setProduct] = useState(null);
   const [images, setImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // Add state for current image index
@@ -116,26 +118,7 @@ const ProductDetails = () => {
           <p className="mt-4 text-gray-600 dark:text-gray-300">
             {product.description}
           </p>
-          <div className="mt-6">
-            <div>
-              <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                Usage
-              </h2>
-              <p className="text-gray-600 dark:text-gray-300">
-                Apply hydro shampoo to wet hair and gently massage the scalp and
-                hair. Rinse your hair well with water. For best results, combine
-                shampoo and hydro conditioner.
-              </p>
-            </div>
-            <div className="mt-4">
-              <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                What's in it?
-              </h2>
-              <p className="text-gray-600 dark:text-gray-300">
-                Ingredients list
-              </p>
-            </div>
-          </div>
+
           <div className="mt-4">
             <label className="block text-gray-700 dark:text-gray-300">
               Quantity:
@@ -176,14 +159,26 @@ const ProductDetails = () => {
               </select>
             </div>
 
-            <div className="mt-4">
-              <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                Total Price: ${totalPrice.toFixed(2)}
-              </span>
-            </div>
+            {token ? (
+              <div className="mt-4">
+                <span className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Total Price: ${totalPrice.toFixed(2)}
+                </span>
+              </div>
+            ) : (
+              <p className="mt-4 text-gray-500 dark:text-gray-400">
+                Login to see the price
+              </p>
+            )}
+
             <button
               onClick={handleAddToCart}
-              className="mt-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              disabled={!token}
+              className={`mt-6 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center ${
+                token
+                  ? "bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  : "bg-gray-300 cursor-not-allowed"
+              }`}
             >
               Add to Cart
             </button>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useCart } from "../Components/CartContext";
 import {
   Dialog,
@@ -7,11 +7,13 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
-
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../routes/AuthContext"; // Import AuthContext
 const Cart = () => {
   const { cartItems, removeFromCart, addToCart } = useCart();
   const [expandedProductNames, setExpandedProductNames] = useState([]);
-
+  const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
   const handleIncreaseQuantity = (productId, size) => {
     addToCart(
       cartItems.find(
@@ -85,7 +87,19 @@ const Cart = () => {
           <DialogTitle className="text-lg font-medium text-gray-900 bg-gray-100 py-3 px-6 border-b border-gray-200">
             Shopping Cart
           </DialogTitle>
-          {cartItems.length === 0 ? (
+          {!token ? (
+            <div className="p-4 text-center">
+              <p className="text-gray-600 dark:text-gray-300">
+                You need to log in to view your cart.
+              </p>
+              <p className="mt-2">
+                <a href="/auth" className="text-blue-700 hover:underline">
+                  Login
+                </a>{" "}
+                to continue.
+              </p>
+            </div>
+          ) : cartItems.length === 0 ? (
             <div className="p-4 text-center">
               <p className="text-gray-600 dark:text-gray-300">
                 Your cart is empty.
@@ -205,9 +219,7 @@ const Cart = () => {
                 </p>
                 <div className="mt-4 flex justify-end">
                   <button
-                    onClick={() =>
-                      console.log("Implement checkout functionality")
-                    }
+                    onClick={() => navigate("/checkout")}
                     className="bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 text-white px-6 py-3 rounded-md text-sm font-medium"
                   >
                     Checkout
